@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-import { useAuth, useLogIn } from "./hooks/auth";
+import { useAuth, useSignUp } from "../hooks/auth";
 
-import { AuthForm } from "./components/form/form";
+import { AuthForm } from "../components/form/form";
 
-import type { FormState } from "./types";
+import type { FormState } from "../types";
 
-const LogIn = () => {
-  const { mutate } = useLogIn();
+const SignUp = () => {
+  const { mutate } = useSignUp();
   const navigation = useNavigate();
   useAuth();
 
@@ -20,7 +20,7 @@ const LogIn = () => {
     });
   };
 
-  return <AuthForm authType="logIn" onSubmit={handleSubmit} />;
+  return <AuthForm authType="signUp" onSubmit={handleSubmit} />;
 };
 
-export default LogIn;
+export default SignUp;

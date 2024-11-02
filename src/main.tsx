@@ -1,24 +1,42 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Auth from "./pages/auth/index.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import "./index.css";
+
+import Home from "./pages/home/index.tsx";
+import LogIn from "./pages/auth/index.tsx";
+import SignUp from "./pages/auth/sign-up/index.tsx";
+import TodoDetail from "./pages/home/detail/index.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Home />,
+  },
+  {
+    path: "/todos/:id",
+    element: <TodoDetail />,
   },
   {
     path: "/auth",
-    element: <Auth />,
+    element: <LogIn />,
+  },
+  {
+    path: "/auth/sign-up",
+    element: <SignUp />,
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </StrictMode>
 );
