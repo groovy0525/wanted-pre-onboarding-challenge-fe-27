@@ -5,3 +5,5 @@ export type Todo = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type RequestTodo = Pick<Todo, "title" | "content">;

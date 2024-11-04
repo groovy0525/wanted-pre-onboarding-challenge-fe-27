@@ -1,18 +1,60 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
-export const CreateTodo = () => {
-  const [text, setText] = useState("");
+import { useCreateTodo } from "../hooks/todos";
 
-  const handleChangeText: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setText(e.target.value);
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
+import { RequestTodo } from "../types";
+
+export const CreateTodo = () => {
+  const [todoFormState, setTodoFormState] = useState<RequestTodo>({
+    title: "",
+    content: "",
+  });
+  const { title, content } = todoFormState;
+  const { mutate } = useCreateTodo();
+
+  const handleChangeText: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
+    const { name, value } = e.target;
+
+    setTodoFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    mutate(todoFormState);
   };
 
   return (
     <div>
-      <Label htmlFor="todo-input">ADD TODO</Label>
-      <Input id="todo-input" onChange={handleChangeText} value={text} />
+      <form onSubmit={handleSubmit}>
+        <div>
+          <Label htmlFor="todo-title">Title</Label>
+          <Input
+            id="todo-title"
+            onChange={handleChangeText}
+            value={title}
+            name="title"
+          />
+        </div>
+        <div>
+          <Label htmlFor="todo-content">Content</Label>
+          <Textarea
+            id="todo-content"
+            onChange={handleChangeText}
+            value={content}
+            name="content"
+          />
+        </div>
+      </form>
     </div>
   );
 };
